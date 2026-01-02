@@ -9,13 +9,14 @@ export interface IStorage {
 
 export class DatabaseStorage implements IStorage {
   async getNews(sources?: string[]): Promise<NewsItem[]> {
-    let query = db.select().from(newsItems).orderBy(desc(newsItems.publishedAt)).limit(100);
+    let query = db.select().from(newsItems).orderBy(desc(newsItems.publishedAt));
     
     if (sources && sources.length > 0) {
+      // Filter by source keys (nhk, jiji, livedoor)
       query.where(inArray(newsItems.source, sources));
     }
     
-    return await query;
+    return await query.limit(100);
   }
 
   async syncNewsItems(items: InsertNewsItem[]): Promise<void> {

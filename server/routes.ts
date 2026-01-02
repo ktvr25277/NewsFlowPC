@@ -63,8 +63,11 @@ export async function registerRoutes(
   setInterval(fetchRSS, 5 * 60 * 1000);
 
   app.get(api.news.list.path, async (req, res) => {
-    const sources = req.query.sources ? (req.query.sources as string).split(',') : undefined;
+    const sourcesQuery = req.query.sources as string | undefined;
+    const sources = sourcesQuery && sourcesQuery !== "" ? sourcesQuery.split(',') : undefined;
+    console.log("Fetching news for sources:", sources || "all");
     const news = await storage.getNews(sources);
+    console.log(`Found ${news.length} items`);
     res.json(news);
   });
 
