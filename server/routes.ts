@@ -23,9 +23,16 @@ export async function registerRoutes(
     console.log("Fetching RSS feeds...");
     const allItems = [];
 
-    for (const [source, url] of Object.entries(RSS_FEEDS)) {
+    const feedMap = {
+      'NHK News': 'nhk',
+      'Jiji Press': 'jiji',
+      'Livedoor News': 'livedoor'
+    };
+
+    for (const [sourceLabel, url] of Object.entries(RSS_FEEDS)) {
       try {
         const feed = await parser.parseURL(url);
+        const sourceKey = feedMap[sourceLabel as keyof typeof feedMap];
         
         for (const item of feed.items) {
           if (!item.title || !item.link) continue;
@@ -34,13 +41,13 @@ export async function registerRoutes(
             title: item.title,
             link: item.link,
             description: item.contentSnippet || item.content || "",
-            source: source,
+            source: sourceKey,
             publishedAt: item.pubDate ? new Date(item.pubDate) : new Date(),
-            thumbnail: null // RSS often doesn't have standard thumbnails, would need scraping
+            thumbnail: null
           });
         }
       } catch (err) {
-        console.error(`Failed to fetch RSS for ${source}:`, err);
+        console.error(`Failed to fetch RSS for ${sourceLabel}:`, err);
       }
     }
 
