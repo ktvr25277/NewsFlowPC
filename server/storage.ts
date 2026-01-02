@@ -1,38 +1,42 @@
-import { type User, type InsertUser } from "@shared/schema";
-import { randomUUID } from "crypto";
-
-// modify the interface with any CRUD methods
-// you might need
+import { db } from "./db";
+import { newsItems, type InsertNewsItem, type NewsItem } from "@shared/schema";
+import { eq, desc, inArray, sql } from "drizzle-orm";
 
 export interface IStorage {
-  getUser(id: string): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
-  createUser(user: InsertUser): Promise<User>;
+  getNews(sources?: string[]): Promise<NewsItem[]>;
+  syncNewsItems(items: InsertNewsItem[]): Promise<void>;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<string, User>;
-
-  constructor() {
-    this.users = new Map();
+export class DatabaseStorage implements IStorage {
+  async getNews(sources?: string[]): Promise<NewsItem[]> {
+    let query = db.select().from(newsItems).orderBy(desc(newsItems.publishedAt)).limit(100);
+    
+    if (sources && sources.length > 0) {
+      query.where(inArray(newsItems.source, sources));
+    }
+    
+    return await query;
   }
 
-  async getUser(id: string): Promise<User | undefined> {
-    return this.users.get(id);
-  }
+  async syncNewsItems(items: InsertNewsItem[]): Promise<void> {
+    if (items.length === 0) return;
 
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
-  }
-
-  async createUser(insertUser: InsertUser): Promise<User> {
-    const id = randomUUID();
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
-    return user;
+    // Upsert items based on link to avoid duplicates
+    for (const item of items) {
+      await db
+        .insert(newsItems)
+        .values(item)
+        .onConflictDoUpdate({
+          target: newsItems.link,
+          set: {
+            title: item.title,
+            description: item.description,
+            publishedAt: item.publishedAt,
+            fetchedAt: new Date(),
+          },
+        });
+    }
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();
