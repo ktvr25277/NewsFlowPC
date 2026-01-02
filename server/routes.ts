@@ -9,7 +9,7 @@ const parser = new Parser();
 
 const RSS_FEEDS = {
   'NHK News': 'https://www.nhk.or.jp/rss/news/cat0.xml',
-  'Jiji Press': 'https://www.jiji.com/rss/jn.rdf',
+  'Google News': 'https://news.google.com/rss?hl=ja&gl=JP&ceid=JP:ja',
   'Livedoor News': 'https://news.livedoor.com/topics/rss/top.xml'
 };
 
@@ -23,16 +23,17 @@ export async function registerRoutes(
     console.log("Fetching RSS feeds...");
     const allItems = [];
 
-    const feedMap = {
+    const feedMap: Record<string, string> = {
       'NHK News': 'nhk',
-      'Jiji Press': 'jiji',
+      'Google News': 'jiji', // Keep key as 'jiji' to avoid frontend changes if possible, or mapping
       'Livedoor News': 'livedoor'
     };
 
     for (const [sourceLabel, url] of Object.entries(RSS_FEEDS)) {
       try {
+        console.log(`Parsing feed: ${sourceLabel} from ${url}`);
         const feed = await parser.parseURL(url);
-        const sourceKey = feedMap[sourceLabel as keyof typeof feedMap];
+        const sourceKey = feedMap[sourceLabel];
         
         for (const item of feed.items) {
           if (!item.title || !item.link) continue;
@@ -54,6 +55,8 @@ export async function registerRoutes(
     if (allItems.length > 0) {
       await storage.syncNewsItems(allItems);
       console.log(`Synced ${allItems.length} news items`);
+    } else {
+      console.log("No news items found in any feed.");
     }
   }
 

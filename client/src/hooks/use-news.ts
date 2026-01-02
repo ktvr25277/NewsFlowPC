@@ -52,7 +52,7 @@ import { useState, useEffect } from "react";
 import { type NewsSettings, newsSettingsSchema } from "@shared/schema";
 
 const DEFAULT_SETTINGS: NewsSettings = {
-  sources: ["nhk", "jiji", "livedoor", "reuters", "cnn"],
+  sources: ["nhk", "jiji", "livedoor"],
   scrollDirection: "horizontal",
   scrollSpeed: "medium",
   refreshInterval: 300,

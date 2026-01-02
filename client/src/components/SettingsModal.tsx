@@ -23,10 +23,8 @@ interface SettingsModalProps {
 
 const AVAILABLE_SOURCES = [
   { id: "nhk", label: "NHK News" },
-  { id: "jiji", label: "Jiji Press" },
+  { id: "jiji", label: "Google News" },
   { id: "livedoor", label: "Livedoor News" },
-  { id: "reuters", label: "Reuters" },
-  { id: "cnn", label: "CNN" },
 ];
 
 export function SettingsModal({ open, onOpenChange }: SettingsModalProps) {
