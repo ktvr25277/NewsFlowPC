@@ -80,7 +80,7 @@ export function useNewsSettings() {
   }, []);
 
   const updateSettings = (newSettings: NewsSettings) => {
-    setSettings(newSettings);
+    setSettings({ ...newSettings });
     localStorage.setItem("news-settings", JSON.stringify(newSettings));
   };
 

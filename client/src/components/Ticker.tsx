@@ -3,6 +3,7 @@ import { motion, useAnimationControls, PanInfo } from "framer-motion";
 import { NewsCard } from "./NewsCard";
 import { type NewsItem } from "@shared/schema";
 import { cn } from "@/lib/utils";
+import { useNewsSettings } from "@/hooks/use-news";
 
 interface TickerProps {
   items: NewsItem[];
@@ -15,6 +16,7 @@ export function Ticker({ items, direction, speed }: TickerProps) {
   const [contentSize, setContentSize] = useState(0);
 
   // Speed configuration (pixels per second)
+  const { settings } = useNewsSettings();
   const getSpeed = () => {
     const base = direction === "horizontal" ? 60 : 40;
     switch (speed) {
@@ -42,7 +44,7 @@ export function Ticker({ items, direction, speed }: TickerProps) {
     >
       {/* Ticker Content */}
       <div 
-        key={`${direction}-${speed}-${items.length}`}
+        key={`${direction}-${speed}-${items.length}-${settings.sources.join(",")}`}
         className={cn(
           "flex pause-on-hover",
           direction === "horizontal" ? "flex-row animate-ticker-h" : "flex-col animate-ticker-v w-full max-w-3xl px-2"

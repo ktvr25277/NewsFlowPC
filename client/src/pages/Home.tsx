@@ -45,6 +45,7 @@ export default function Home() {
   }
 
   const hasNews = newsItems && newsItems.length > 0;
+  const settingsKey = `${settings.scrollDirection}-${settings.scrollSpeed}-${settings.sources.join(",")}`;
 
   return (
     <div className="h-screen w-full flex flex-col overflow-hidden bg-background text-foreground">
@@ -96,7 +97,7 @@ export default function Home() {
       <main className="flex-1 relative overflow-hidden bg-muted/5">
         {hasNews ? (
           <Ticker 
-            key={`${settings.scrollDirection}-${settings.scrollSpeed}-${Date.now()}`}
+            key={`${settings.scrollDirection}-${settings.scrollSpeed}-${settings.sources.join(",")}`}
             items={newsItems} 
             direction={settings.scrollDirection} 
             speed={settings.scrollSpeed} 
