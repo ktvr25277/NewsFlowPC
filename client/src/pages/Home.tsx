@@ -49,34 +49,34 @@ export default function Home() {
   return (
     <div className="h-screen w-full flex flex-col overflow-hidden bg-background text-foreground">
       {/* Header */}
-      <header className="flex-none h-16 border-b border-border bg-card/50 backdrop-blur-md z-50 flex items-center justify-between px-4 sm:px-6">
-        <div className="flex items-center space-x-3">
-          <div className="bg-primary/10 p-2 rounded-lg">
-            <Newspaper className="w-6 h-6 text-primary" />
+      <header className="flex-none h-14 border-b border-border bg-card/80 backdrop-blur-md z-50 flex items-center justify-between px-4">
+        <div className="flex items-center space-x-2">
+          <div className="bg-primary/10 p-1.5 rounded-lg">
+            <Newspaper className="w-5 h-5 text-primary" />
           </div>
-          <h1 className="text-xl font-serif font-bold tracking-tight hidden sm:block">
+          <h1 className="text-lg font-bold tracking-tight hidden sm:block">
             News<span className="text-primary">Flow</span>
           </h1>
         </div>
 
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-1">
           <Button 
             variant="ghost" 
             size="icon" 
             onClick={handleSync}
             disabled={isSyncing}
-            className={cn("text-muted-foreground hover:text-foreground", isSyncing && "animate-spin")}
+            className={cn("text-muted-foreground hover:text-foreground h-9 w-9", isSyncing && "animate-spin")}
             title="Force Refresh"
           >
-            <RefreshCw className="w-5 h-5" />
+            <RefreshCw className="w-4 h-4" />
           </Button>
 
-          <div className="h-6 w-px bg-border mx-2" />
+          <div className="h-4 w-px bg-border mx-1" />
 
           <Link href="/read-later">
-            <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground">
-              <Bookmark className="w-5 h-5" />
-              <span className="hidden sm:inline">Read Later</span>
+            <Button variant="ghost" size="sm" className="h-9 gap-1.5 text-muted-foreground hover:text-foreground">
+              <Bookmark className="w-4 h-4" />
+              <span className="hidden sm:inline">Saved</span>
             </Button>
           </Link>
 
@@ -84,24 +84,25 @@ export default function Home() {
             variant="outline" 
             size="sm" 
             onClick={() => setSettingsOpen(true)}
-            className="gap-2 shadow-sm"
+            className="h-9 gap-1.5 shadow-sm"
           >
-            <Settings className="w-4 h-4" />
-            <span className="hidden sm:inline">Preferences</span>
+            <Settings className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Settings</span>
           </Button>
         </div>
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-1 relative overflow-hidden">
+      <main className="flex-1 relative overflow-hidden bg-muted/5">
         {hasNews ? (
           <Ticker 
+            key={`${settings.scrollDirection}-${settings.scrollSpeed}`}
             items={newsItems} 
             direction={settings.scrollDirection} 
             speed={settings.scrollSpeed} 
           />
         ) : (
-          <div className="h-full flex flex-col items-center justify-center text-center p-8">
+          <div className="h-full flex flex-col items-center justify-center text-center p-4">
             <div className="bg-muted p-6 rounded-full mb-6">
               <Newspaper className="w-12 h-12 text-muted-foreground" />
             </div>

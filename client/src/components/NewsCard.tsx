@@ -56,43 +56,43 @@ export function NewsCard({ item, variant = "ticker", direction = "horizontal" }:
             : "w-full mb-4"
         )}
       >
-        <div className="p-4 h-full flex flex-col justify-between">
+        <div className="p-3.5 h-full flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between mb-2">
-              <span className={cn("text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full", getSourceColor(item.source))}>
+            <div className="flex items-center justify-between mb-1.5">
+              <span className={cn("text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded", getSourceColor(item.source))}>
                 {item.source}
               </span>
-              <span className="text-xs text-muted-foreground font-mono">
+              <span className="text-[10px] text-muted-foreground font-medium">
                 {item.publishedAt ? formatDistanceToNow(new Date(item.publishedAt), { addSuffix: true }) : ''}
               </span>
             </div>
             
-            <h3 className="font-serif font-bold text-lg leading-snug line-clamp-3 text-foreground group-hover:text-primary transition-colors">
+            <h3 className="font-sans font-bold text-base leading-tight line-clamp-2 text-foreground group-hover:text-primary transition-colors">
               {item.title}
             </h3>
             
             {item.description && direction === "vertical" && (
-              <p className="mt-2 text-sm text-muted-foreground line-clamp-2">
+              <p className="mt-1.5 text-xs text-muted-foreground line-clamp-2">
                 {item.description}
               </p>
             )}
           </div>
 
-          <div className="flex items-center justify-between mt-4 pt-3 border-t border-border/50">
-            <span className="text-xs font-medium text-primary flex items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0">
-              Read Article <ExternalLink className="w-3 h-3 ml-1" />
+          <div className="flex items-center justify-between mt-3 pt-2 border-t border-border/40">
+            <span className="text-[10px] font-semibold text-primary flex items-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-[-4px] group-hover:translate-x-0">
+              OPEN <ExternalLink className="w-2.5 h-2.5 ml-1" />
             </span>
             
             <Button
               variant="ghost"
               size="icon"
               className={cn(
-                "h-8 w-8 rounded-full hover:bg-primary/10 transition-colors",
+                "h-7 w-7 rounded-lg hover:bg-primary/10 transition-colors",
                 saved ? "text-primary hover:text-primary" : "text-muted-foreground hover:text-primary"
               )}
               onClick={handleToggleSave}
             >
-              {saved ? <Check className="w-4 h-4" /> : <Bookmark className="w-4 h-4" />}
+              {saved ? <Check className="w-3.5 h-3.5" /> : <Bookmark className="w-3.5 h-3.5" />}
             </Button>
           </div>
         </div>

@@ -5,8 +5,8 @@
 @tailwind utilities;
 
 :root {
-  --font-sans: 'Inter', sans-serif;
-  --font-serif: 'Merriweather', serif;
+  --font-sans: 'Inter', 'Noto Sans JP', sans-serif;
+  --font-serif: 'Noto Sans JP', serif;
   --font-mono: 'JetBrains Mono', monospace;
 
   /* Light Theme - Clean & Crisp */
@@ -37,7 +37,7 @@
   --border: 214.3 31.8% 91.4%;
   --input: 214.3 31.8% 91.4%;
   --ring: 221.2 83.2% 53.3%;
-  --radius: 0.75rem;
+  --radius: 0.5rem;
 }
 
 .dark {
