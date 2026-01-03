@@ -52,7 +52,7 @@ export function NewsCard({ item, variant = "ticker", direction = "horizontal" }:
         className={cn(
           "group block relative bg-card rounded-xl border border-border/50 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden",
           direction === "horizontal" 
-            ? "w-[300px] md:w-[400px] h-full flex-shrink-0 mx-3" 
+            ? "w-[300px] md:w-[400px] h-full flex-shrink-0 mx-1 sm:mx-3" 
             : "w-full mb-4"
         )}
       >
