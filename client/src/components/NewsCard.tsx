@@ -56,18 +56,18 @@ export function NewsCard({ item, variant = "ticker", direction = "horizontal" }:
             : "w-full mb-4"
         )}
       >
-        <div className="p-3.5 h-full flex flex-col justify-between">
+        <div className="p-2 sm:p-3.5 h-full flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between mb-1.5">
-              <span className={cn("text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded", getSourceColor(item.source))}>
+            <div className="flex items-center justify-between mb-1 sm:mb-1.5">
+              <span className={cn("text-[8px] sm:text-[9px] font-bold uppercase tracking-widest px-1 sm:px-1.5 py-0.5 rounded", getSourceColor(item.source))}>
                 {item.source}
               </span>
-              <span className="text-[10px] text-muted-foreground font-medium">
+              <span className="text-[9px] sm:text-[10px] text-muted-foreground font-medium">
                 {item.publishedAt ? formatDistanceToNow(new Date(item.publishedAt), { addSuffix: true }) : ''}
               </span>
             </div>
             
-            <h3 className="font-sans font-bold text-base leading-tight line-clamp-2 text-foreground group-hover:text-primary transition-colors">
+            <h3 className="font-sans font-bold text-sm sm:text-base leading-tight line-clamp-2 text-foreground group-hover:text-primary transition-colors">
               {item.title}
             </h3>
             
@@ -78,8 +78,8 @@ export function NewsCard({ item, variant = "ticker", direction = "horizontal" }:
             )}
           </div>
 
-          <div className="flex items-center justify-between mt-3 pt-2 border-t border-border/40">
-            <span className="text-[10px] font-semibold text-primary flex items-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-[-4px] group-hover:translate-x-0">
+          <div className="flex items-center justify-between mt-2 sm:mt-3 pt-1.5 sm:pt-2 border-t border-border/40">
+            <span className="text-[9px] sm:text-[10px] font-semibold text-primary flex items-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-[-4px] group-hover:translate-x-0">
               OPEN <ExternalLink className="w-2.5 h-2.5 ml-1" />
             </span>
             
@@ -87,12 +87,12 @@ export function NewsCard({ item, variant = "ticker", direction = "horizontal" }:
               variant="ghost"
               size="icon"
               className={cn(
-                "h-7 w-7 rounded-lg hover:bg-primary/10 transition-colors",
+                "h-6 w-6 sm:h-7 sm:w-7 rounded-lg hover:bg-primary/10 transition-colors",
                 saved ? "text-primary hover:text-primary" : "text-muted-foreground hover:text-primary"
               )}
               onClick={handleToggleSave}
             >
-              {saved ? <Check className="w-3.5 h-3.5" /> : <Bookmark className="w-3.5 h-3.5" />}
+              {saved ? <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> : <Bookmark className="w-3 h-3 sm:w-3.5 sm:h-3.5" />}
             </Button>
           </div>
         </div>

@@ -30,7 +30,7 @@ export function Ticker({ items, direction, speed }: TickerProps) {
   const extendedItems = [...items, ...items, ...items, ...items];
 
   // Duration calculation
-  const cardSize = direction === "horizontal" ? 400 : 160; 
+  const cardSize = direction === "horizontal" ? (window.innerWidth < 640 ? 300 : 400) : 160; 
   const totalSize = items.length * cardSize;
   const duration = totalSize / getSpeed();
 
@@ -39,7 +39,7 @@ export function Ticker({ items, direction, speed }: TickerProps) {
       ref={containerRef}
       className={cn(
         "relative overflow-hidden w-full h-full bg-background/30",
-        direction === "horizontal" ? "flex items-center py-2 sm:py-4" : "flex flex-col items-center pt-4 sm:pt-8"
+        direction === "horizontal" ? "flex items-center" : "flex flex-col items-center pt-4 sm:pt-8"
       )}
     >
       {/* Ticker Content */}
