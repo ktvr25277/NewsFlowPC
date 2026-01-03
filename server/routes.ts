@@ -25,7 +25,7 @@ export async function registerRoutes(
 
     const feedMap: Record<string, string> = {
       'NHK News': 'nhk',
-      'Google News': 'jiji', // Keep key as 'jiji' to avoid frontend changes if possible, or mapping
+      'Google News': 'jiji',
       'Livedoor News': 'livedoor'
     };
 

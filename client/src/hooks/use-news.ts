@@ -80,8 +80,12 @@ export function useNewsSettings() {
   }, []);
 
   const updateSettings = (newSettings: NewsSettings) => {
-    setSettings({ ...newSettings });
-    localStorage.setItem("news-settings", JSON.stringify(newSettings));
+    // Ensure we only save sources that actually exist in our mapping
+    const validSources = newSettings.sources.filter(s => ["nhk", "jiji", "livedoor"].includes(s));
+    const cleanedSettings = { ...newSettings, sources: validSources };
+    
+    setSettings(cleanedSettings);
+    localStorage.setItem("news-settings", JSON.stringify(cleanedSettings));
   };
 
   return { settings, updateSettings, isLoaded };
