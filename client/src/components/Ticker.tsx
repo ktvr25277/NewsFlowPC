@@ -46,7 +46,7 @@ export function Ticker({ items, direction, speed }: TickerProps) {
       <div 
         key={`${direction}-${speed}-${items.length}-${settings.sources.join(",")}`}
         className={cn(
-          "flex pause-on-hover",
+          "flex",
           direction === "horizontal" ? "flex-row animate-ticker-h" : "flex-col animate-ticker-v w-full max-w-3xl px-2"
         )}
         style={{
