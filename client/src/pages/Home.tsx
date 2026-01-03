@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Link } from "wouter";
 import { Settings, Bookmark, RefreshCw, Newspaper, WifiOff, Maximize, Minimize } from "lucide-react";
 import { useNews, useNewsSettings, useSyncNews } from "@/hooks/use-news";
