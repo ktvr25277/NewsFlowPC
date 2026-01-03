@@ -143,7 +143,10 @@ export default function Home() {
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-1 relative overflow-hidden bg-muted/5 p-1 sm:p-2">
+      <main className={cn(
+        "flex-1 relative overflow-hidden bg-muted/5",
+        settings.scrollDirection === "horizontal" ? "p-0" : "p-2 sm:p-4"
+      )}>
         {hasNews ? (
           <Ticker 
             key={`${settings.scrollDirection}-${settings.scrollSpeed}-${settings.sources.join(",")}`}
