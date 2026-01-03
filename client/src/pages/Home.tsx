@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Link } from "wouter";
-import { Settings, Bookmark, RefreshCw, Newspaper, WifiOff } from "lucide-react";
+import { Settings, Bookmark, RefreshCw, Newspaper, WifiOff, Maximize, Minimize } from "lucide-react";
 import { useNews, useNewsSettings, useSyncNews } from "@/hooks/use-news";
 import { Ticker } from "@/components/Ticker";
 import { SettingsModal } from "@/components/SettingsModal";
@@ -10,9 +10,24 @@ import { cn } from "@/lib/utils";
 
 export default function Home() {
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const { settings, isLoaded } = useNewsSettings();
   const { data: newsItems, isLoading, error, refetch } = useNews(settings.sources);
   const { mutate: syncNews, isPending: isSyncing } = useSyncNews();
+
+  const toggleFullscreen = useCallback(() => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch((err) => {
+        console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+      });
+      setIsFullscreen(true);
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+        setIsFullscreen(false);
+      }
+    }
+  }, []);
 
   const handleSync = () => {
     syncNews(undefined, {
@@ -61,6 +76,18 @@ export default function Home() {
         </div>
 
         <div className="flex items-center space-x-1">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={toggleFullscreen}
+            className="text-muted-foreground hover:text-foreground h-9 w-9"
+            title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+          >
+            {isFullscreen ? <Minimize className="w-4 h-4" /> : <Maximize className="w-4 h-4" />}
+          </Button>
+
+          <div className="h-4 w-px bg-border mx-1" />
+
           <Button 
             variant="ghost" 
             size="icon" 
