@@ -48,7 +48,7 @@ export function useSyncNews() {
 // LOCAL STORAGE HOOK FOR SETTINGS
 // ============================================
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, createContext, useContext, ReactNode } from "react";
 import { type NewsSettings, newsSettingsSchema } from "@shared/schema";
 
 const DEFAULT_SETTINGS: NewsSettings = {
@@ -58,7 +58,15 @@ const DEFAULT_SETTINGS: NewsSettings = {
   refreshInterval: 300,
 };
 
-export function useNewsSettings() {
+type SettingsContextType = {
+  settings: NewsSettings;
+  updateSettings: (newSettings: NewsSettings) => void;
+  isLoaded: boolean;
+};
+
+const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
+
+export function SettingsProvider({ children }: { children: ReactNode }) {
   const [settings, setSettings] = useState<NewsSettings>(DEFAULT_SETTINGS);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -67,7 +75,6 @@ export function useNewsSettings() {
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        // Validate against schema to ensure data integrity
         const validated = newsSettingsSchema.safeParse(parsed);
         if (validated.success) {
           setSettings(validated.data);
@@ -80,15 +87,25 @@ export function useNewsSettings() {
   }, []);
 
   const updateSettings = (newSettings: NewsSettings) => {
-    // Ensure we only save sources that actually exist in our mapping
     const validSources = newSettings.sources.filter(s => ["nhk", "jiji", "livedoor"].includes(s));
     const cleanedSettings = { ...newSettings, sources: validSources };
-    
     setSettings(cleanedSettings);
     localStorage.setItem("news-settings", JSON.stringify(cleanedSettings));
   };
 
-  return { settings, updateSettings, isLoaded };
+  return (
+    <SettingsContext.Provider value={{ settings, updateSettings, isLoaded }}>
+      {children}
+    </SettingsContext.Provider>
+  );
+}
+
+export function useNewsSettings() {
+  const context = useContext(SettingsContext);
+  if (!context) {
+    throw new Error("useNewsSettings must be used within a SettingsProvider");
+  }
+  return context;
 }
 
 // ============================================
