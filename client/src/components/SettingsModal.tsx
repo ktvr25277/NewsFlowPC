@@ -37,6 +37,7 @@ export function SettingsModal({ open, onOpenChange }: SettingsModalProps) {
   }, [settings, open]);
 
   const handleSave = () => {
+    console.log("Saving settings:", localSettings);
     updateSettings(localSettings);
     onOpenChange(false);
   };

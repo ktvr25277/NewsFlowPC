@@ -96,7 +96,7 @@ export default function Home() {
       <main className="flex-1 relative overflow-hidden bg-muted/5">
         {hasNews ? (
           <Ticker 
-            key={`${settings.scrollDirection}-${settings.scrollSpeed}`}
+            key={`${settings.scrollDirection}-${settings.scrollSpeed}-${Date.now()}`}
             items={newsItems} 
             direction={settings.scrollDirection} 
             speed={settings.scrollSpeed} 

@@ -79,12 +79,9 @@ export function useNewsSettings() {
     setIsLoaded(true);
   }, []);
 
-  const updateSettings = (newSettings: Partial<NewsSettings>) => {
-    setSettings((prev) => {
-      const updated = { ...prev, ...newSettings };
-      localStorage.setItem("news-settings", JSON.stringify(updated));
-      return updated;
-    });
+  const updateSettings = (newSettings: NewsSettings) => {
+    setSettings(newSettings);
+    localStorage.setItem("news-settings", JSON.stringify(newSettings));
   };
 
   return { settings, updateSettings, isLoaded };
