@@ -37,7 +37,7 @@ export function Ticker({ items, direction, speed }: TickerProps) {
       ref={containerRef}
       className={cn(
         "relative overflow-hidden w-full h-full bg-background/30",
-        direction === "horizontal" ? "flex items-center" : "flex flex-col items-center"
+        direction === "horizontal" ? "flex items-center" : "flex flex-col items-center pt-8"
       )}
     >
       {/* Ticker Content */}
