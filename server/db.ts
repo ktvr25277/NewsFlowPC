@@ -17,6 +17,9 @@ export const pool = new Pool({
   connectionString,
   ssl: connectionString.includes('localhost') || connectionString.includes('127.0.0.1') 
     ? false 
-    : { rejectUnauthorized: false }
+    : { rejectUnauthorized: false },
+  max: 1, // Minimize connections in serverless environment
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 2000,
 });
 export const db = drizzle(pool, { schema });
