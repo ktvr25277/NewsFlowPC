@@ -21,6 +21,9 @@ export async function registerRoutes(
   // Fetch and cache news
   async function fetchRSS() {
     console.log("Fetching RSS feeds...");
+    // Only perform the sync if we're not in a serverless function that might timeout
+    // or if this is the first initialization.
+    // In Vercel, background tasks with setInterval don't work well.
     const allItems = [];
 
     const feedMap: Record<string, string> = {
@@ -60,10 +63,16 @@ export async function registerRoutes(
     }
   }
 
-  // Initial fetch
-  fetchRSS();
-  // Fetch every 5 minutes
-  setInterval(fetchRSS, 5 * 60 * 1000);
+  // Initial fetch - avoid blocking in serverless
+  if (process.env.NODE_ENV !== "production") {
+    fetchRSS();
+    // Fetch every 5 minutes
+    setInterval(fetchRSS, 5 * 60 * 1000);
+  } else {
+    // In production (Vercel), we might want to trigger this via a cron job or on-demand
+    // but for now, we'll do one fetch on cold start if needed, but not block.
+    fetchRSS().catch(err => console.error("Initial fetch failed:", err));
+  }
 
   app.get(api.news.list.path, async (req, res) => {
     const sourcesQuery = req.query.sources as string | undefined;

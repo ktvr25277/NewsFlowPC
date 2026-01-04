@@ -23,19 +23,20 @@ app.use((req, res, next) => {
 (async () => {
   try {
     const httpServer = createServer(app);
+    // Vercel serverless functions can't handle long-running background tasks
+    // so we need to ensure the route registration is lean.
     await registerRoutes(httpServer, app);
 
     // Serve static files in production
     if (process.env.NODE_ENV === "production") {
+      // Use process.cwd() to correctly locate the dist folder in Vercel
       const publicPath = path.resolve(process.cwd(), "dist", "public");
-      if (fs.existsSync(publicPath)) {
-        app.use(express.static(publicPath));
-        app.get("*", (req, res) => {
-          if (!req.path.startsWith("/api")) {
-            res.sendFile(path.join(publicPath, "index.html"));
-          }
-        });
-      }
+      app.use(express.static(publicPath));
+      app.get("*", (req, res) => {
+        if (!req.path.startsWith("/api")) {
+          res.sendFile(path.join(publicPath, "index.html"));
+        }
+      });
     }
 
     // Error handling
