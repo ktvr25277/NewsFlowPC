@@ -16,21 +16,29 @@ export default function Home() {
   const { mutate: syncNews, isPending: isSyncing } = useSyncNews();
 
   const toggleFullscreen = useCallback(() => {
-    const doc = window.document;
-    const docEl = doc.documentElement;
+    const docEl = document.documentElement;
 
-    const requestFullScreen = docEl.requestFullscreen || (docEl as any).mozRequestFullScreen || (docEl as any).webkitRequestFullScreen || (docEl as any).msRequestFullScreen;
-    const cancelFullScreen = doc.exitFullscreen || (doc as any).mozCancelFullScreen || (doc as any).webkitExitFullscreen || (doc as any).msExitFullscreen;
-
-    if (!doc.fullscreenElement && ! (doc as any).mozFullScreenElement && ! (doc as any).webkitFullscreenElement && ! (doc as any).msFullscreenElement) {
-      if (requestFullScreen) {
-        requestFullScreen.call(docEl).then(() => setIsFullscreen(true)).catch((err) => {
-          console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+    if (!document.fullscreenElement) {
+      if (docEl.requestFullscreen) {
+        docEl.requestFullscreen().then(() => setIsFullscreen(true)).catch((err) => {
+          console.error(`Error: ${err.message}`);
         });
+      } else if ((docEl as any).webkitRequestFullscreen) {
+        (docEl as any).webkitRequestFullscreen();
+        setIsFullscreen(true);
+      } else if ((docEl as any).msRequestFullscreen) {
+        (docEl as any).msRequestFullscreen();
+        setIsFullscreen(true);
       }
     } else {
-      if (cancelFullScreen) {
-        cancelFullScreen.call(doc).then(() => setIsFullscreen(false));
+      if (document.exitFullscreen) {
+        document.exitFullscreen().then(() => setIsFullscreen(false));
+      } else if ((document as any).webkitExitFullscreen) {
+        (document as any).webkitExitFullscreen();
+        setIsFullscreen(false);
+      } else if ((document as any).msExitFullscreen) {
+        (document as any).msExitFullscreen();
+        setIsFullscreen(false);
       }
     }
   }, []);

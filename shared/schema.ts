@@ -30,6 +30,7 @@ export const newsSettingsSchema = z.object({
   scrollDirection: z.enum(["horizontal", "vertical"]),
   scrollSpeed: z.enum(["slow", "medium", "fast"]),
   refreshInterval: z.number().min(60).max(3600), // seconds
+  fontSize: z.enum(["small", "medium", "large"]).default("medium"),
 });
 
 export type NewsSettings = z.infer<typeof newsSettingsSchema>;

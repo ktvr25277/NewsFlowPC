@@ -1,7 +1,7 @@
 import { ExternalLink, Bookmark, Check } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { type NewsItem } from "@shared/schema";
-import { useReadLater } from "@/hooks/use-news";
+import { useReadLater, useNewsSettings } from "@/hooks/use-news";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
@@ -13,7 +13,20 @@ interface NewsCardProps {
 
 export function NewsCard({ item, variant = "ticker", direction = "horizontal" }: NewsCardProps) {
   const { isSaved, saveArticle, removeArticle } = useReadLater();
+  const { settings } = useNewsSettings();
   const saved = isSaved(item.id);
+
+  const fontSizeClass = ({
+    small: "text-[10px] sm:text-xs",
+    medium: "text-xs sm:text-base",
+    large: "text-base sm:text-xl",
+  } as Record<string, string>)[settings.fontSize || "medium"];
+
+  const titleSizeClass = ({
+    small: "text-xs sm:text-sm",
+    medium: "text-sm sm:text-base",
+    large: "text-base sm:text-lg",
+  } as Record<string, string>)[settings.fontSize || "medium"];
 
   const handleToggleSave = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -67,7 +80,7 @@ export function NewsCard({ item, variant = "ticker", direction = "horizontal" }:
               </span>
             </div>
             
-            <h3 className="font-sans font-bold text-xs sm:text-base leading-tight line-clamp-2 text-foreground group-hover:text-primary transition-colors">
+            <h3 className={cn("font-sans font-bold leading-tight line-clamp-2 text-foreground group-hover:text-primary transition-colors", titleSizeClass)}>
               {item.title}
             </h3>
             

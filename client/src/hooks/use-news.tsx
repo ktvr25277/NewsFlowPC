@@ -56,6 +56,7 @@ const DEFAULT_SETTINGS: NewsSettings = {
   scrollDirection: "horizontal",
   scrollSpeed: "medium",
   refreshInterval: 300,
+  fontSize: "medium",
 };
 
 type SettingsContextType = {

@@ -157,6 +157,24 @@ export function SettingsModal({ open, onOpenChange }: SettingsModalProps) {
               className="py-4"
             />
           </div>
+
+          {/* Font Size */}
+          <div className="space-y-3">
+            <Label className="text-base font-semibold">Font Size</Label>
+            <div className="flex gap-2">
+              {(['small', 'medium', 'large'] as const).map((size) => (
+                <Button
+                  key={size}
+                  type="button"
+                  variant={localSettings.fontSize === size ? "default" : "outline"}
+                  className="flex-1"
+                  onClick={() => setLocalSettings(prev => ({ ...prev, fontSize: size }))}
+                >
+                  {size.charAt(0).toUpperCase() + size.slice(1)}
+                </Button>
+              ))}
+            </div>
+          </div>
         </div>
 
         <DialogFooter className="gap-2 sm:gap-0">
